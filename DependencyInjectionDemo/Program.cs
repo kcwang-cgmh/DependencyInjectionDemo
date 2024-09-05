@@ -11,11 +11,12 @@ namespace DependencyInjectionDemo
             var host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices((context, services) =>
                 {
-                    services.AddTransient<IDataService, DbDataService>();
+                    services.AddTransient<IDataService, WebApiService>();
                 })
                 .Build();
 
             var dataService = host.Services.GetRequiredService<IDataService>();
+
             Console.WriteLine(dataService.GetData());
         }
     }
