@@ -8,16 +8,22 @@ namespace DependencyInjectionDemo
     {
         static void Main(string[] args)
         {
-            var host = Host.CreateDefaultBuilder(args)
-                .ConfigureServices((context, services) =>
-                {
-                    services.AddTransient<IDataService, WebApiService>();
-                })
-                .Build();
+            // 建立 DI 容器
+            var serviceProvider = new ServiceCollection()
+                .AddSingleton<IDataService, DbDataService>()
+                .BuildServiceProvider();
 
-            var dataService = host.Services.GetRequiredService<IDataService>();
+            // 從 DI 容器取得服務
+            var dataService = serviceProvider.GetService<IDataService>();
 
-            Console.WriteLine(dataService.GetData());
+            // 使用服務
+            var data = dataService?.GetData();
+
+            // 輸出結果
+            if (!string.IsNullOrWhiteSpace(data))
+            {
+                Console.WriteLine(data);
+            }
         }
     }
 }
